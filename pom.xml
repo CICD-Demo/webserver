@@ -5,36 +5,8 @@
 	<groupId>org.jboss.examples</groupId>
 	<artifactId>webserver</artifactId>
 	<version>2.7.0.Final</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<name>webserver</name>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<build>
-		<!-- Maven will append the version to the finalName (which is the name 
-			given to the generated war, and hence the context root) -->
-		<finalName>${project.artifactId}</finalName>
-		<pluginManagement>
-
-			<plugins>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-					<configuration>
-						<failOnMissingWebXml>false</failOnMissingWebXml>
-						<archive>
-							<manifestEntries>
-								<Dependencies>org.jboss.as.naming,org.jboss.as.server,org.jboss.msc</Dependencies>
-							</manifestEntries>
-						</archive>
-					</configuration>
-				</plugin>
-
-			</plugins>
-		</pluginManagement>
-	</build>
 
 	<profiles>
 		<profile>
@@ -42,18 +14,30 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.4.3</version>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>2.5</version>
 						<configuration>
-							<skip>true</skip>
+							<filesets>
+								<fileset>
+									<directory>deployments</directory>
+								</fileset>
+							</filesets>
 						</configuration>
 					</plugin>
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
+						<version>2.6</version>
 						<configuration>
 							<outputDirectory>deployments</outputDirectory>
 							<warName>ROOT</warName>
 						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>war</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
