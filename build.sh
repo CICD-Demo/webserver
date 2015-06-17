@@ -39,7 +39,7 @@ parameters:
     type: Git
     git:
       ref: master
-      uri: http://gogs.gogs.svc/$PROJECT/webserver
+      uri: http://gogs.gogs/$PROJECT/webserver
   output:
     to:
       name: webserver

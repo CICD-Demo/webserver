@@ -50,6 +50,8 @@ items:
               image: webserver:latest
               ports:
               - containerPort: 8080
+              - containerPort: 8778
+                name: jolokia
         labels:
           component: webserver
 
