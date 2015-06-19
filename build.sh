@@ -13,7 +13,8 @@ apiVersion: v1beta1
 metadata:
   name: webserver
   labels:
-    component: webserver
+    service: webserver
+    function: application
 EOF
 
 osc create -f - <<EOF
@@ -22,7 +23,8 @@ apiVersion: v1beta1
 metadata:
   name: webserver
   labels:
-    component: webserver
+    service: webserver
+    function: application
 triggers:
 - type: generic
   generic:
