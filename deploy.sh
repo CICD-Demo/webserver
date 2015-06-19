@@ -5,13 +5,22 @@ cd $(dirname $0)
 . utils
 . ../../environment
 
+PROJECT=$(osc status | sed -n '1 { s/.* //; p; }')
+
+if [ $PROJECT = $PROD ]; then
+  REPLICAS=2
+else
+  REPLICAS=1
+fi
+
 osc create -f - <<EOF || true
 kind: ImageStream
 apiVersion: v1beta1
 metadata:
   name: webserver
   labels:
-    component: webserver
+    service: webserver
+    function: application
 EOF
 
 osc create -f - <<EOF
@@ -23,7 +32,8 @@ items:
   metadata:
     name: webserver
     labels:
-      component: webserver
+      service: webserver
+      function: application
   triggers:
   - type: ConfigChange
   - type: ImageChange
@@ -38,9 +48,10 @@ items:
     strategy:
       type: Recreate
     controllerTemplate:
-      replicas: 1
+      replicas: $REPLICAS
       replicaSelector:
-        component: webserver
+        service: webserver
+        function: application
       podTemplate:
         desiredState:
           manifest:
@@ -53,18 +64,21 @@ items:
               - containerPort: 8778
                 name: jolokia
         labels:
-          component: webserver
+          service: webserver
+          function: application
 
 - kind: Service
   apiVersion: v1beta3
   metadata:
     name: webserver
     labels:
-      component: webserver
+      service: webserver
+      function: application
   spec:
     ports:
     - port: 80
       targetPort: 8080
     selector:
-      component: webserver
+      service: webserver
+      function: application
 EOF
