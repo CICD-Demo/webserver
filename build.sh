@@ -43,7 +43,7 @@ spec:
   source:
     type: Git
     git:
-      uri: http://gogs.$INFRA/$PROJECT/webserver
+      uri: http://gogs.$DOMAIN/$PROJECT/webserver
       ref: master
   output:
     to:
