@@ -5,7 +5,7 @@ cd $(dirname $0)
 . utils
 . ../../environment
 
-PROJECT=$(oc status | sed -n '1 { s/.* //; p; }')
+PROJECT=$(oc status | sed -n '1 { s/.* //; s/(//; s/)//;  p; }')
 
 oc create -f - <<EOF || true
 kind: ImageStream
